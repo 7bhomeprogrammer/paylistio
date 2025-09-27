@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUBG - Донат (Formspree)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Montserrat+Alternates:wght@600&display=swap" rel="stylesheet">
+<style>
+body {margin:0;font-family:'Poppins',sans-serif;background:#f5f6fa;color:#2f3640;}
+header {background:#fff;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,0.08);}
+.logo {font-size:1.5rem;font-weight:600;}
+a {text-decoration:none;color:#0984e3;}
+.container {max-width:900px;margin:30px auto;padding:0 15px;}
+h1 {text-align:center;margin-bottom:25px;}
+.prices {display:flex;flex-wrap:wrap;gap:15px;justify-content:center;}
+.price-card {flex:1 1 200px;background:#fff;border-radius:12px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,0.06);display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform .15s,box-shadow .15s;}
+.price-card span:first-child {font-weight:600;margin-bottom:8px;}
+.price-card span:last-child {font-family:'Montserrat Alternates',sans-serif;font-size:1.1rem;color:#0984e3;}
+.price-card:hover {transform:translateY(-5px);box-shadow:0 6px 18px rgba(0,0,0,0.12);}
+#modal {display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:1000;}
+#modal-content {background:#1e1e2f;padding:25px;border-radius:12px;width:320px;color:#fff;position:relative;font-family:'Poppins',sans-serif;}
+#modal-close {position:absolute;top:10px;right:15px;cursor:pointer;font-weight:bold;font-size:20px;}
+#modal-item {margin-bottom:15px;font-size:18px;}
+#player-id {width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:15px;font-size:14px;}
+#modal-payment {margin-top:10px;font-size:14px;}
+#modal-payment b {color:#ffdd59;}
+form input[type="submit"] {width:100%;padding:10px;margin-top:10px;background:#0984e3;color:#fff;border:none;border-radius:8px;cursor:pointer;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">PUBG</div>
+  <a href="paylist.html">⟵ Назад</a>
+</header>
+
+<main class="container">
+  <h1>Выберите донат</h1>
+  <div class="prices">
+    <div class="price-card"><span>60 UC</span><span>18 400 сум</span></div>
+    <div class="price-card"><span>325 UC</span><span>71 200 сум</span></div>
+    <div class="price-card"><span>660 UC</span><span>140 600 сум</span></div>
+    <div class="price-card"><span>660+325 UC</span><span>200 400 сум</span></div>
+    <div class="price-card"><span>1800 UC</span><span>341 100 сум</span></div>
+    <div class="price-card"><span>3850 UC</span><span>680 700 сум</span></div>
+    <div class="price-card"><span>8100 UC</span><span>1 400 800 сум</span></div>
+    <div class="price-card"><span>16200 UC</span><span>2 622 300 сум</span></div>
+    <div class="price-card"><span>24300 UC</span><span>3 434 600 сум</span></div>
+    <div class="price-card"><span>Elite Pass (1-50)</span><span>95 600 сум</span></div>
+    <div class="price-card"><span>Elite Pass</span><span>175 700 сум</span></div>
+    <div class="price-card"><span>Elite Pass Plus</span><span>450 700 сум</span></div>
+    <div class="price-card"><span>Weekly Pack</span><span>16 000 сум</span></div>
+    <div class="price-card"><span>Mythic Pack</span><span>75 000 сум</span></div>
+    <div class="price-card"><span>First Purchase Bonus</span><span>50 400 сум</span></div>
+    <div class="price-card"><span>Prime 1 month</span><span>20 200 сум</span></div>
+    <div class="price-card"><span>Prime 3 months</span><span>50 300 сум</span></div>
+    <div class="price-card"><span>Prime 6 months</span><span>90 500 сум</span></div>
+    <div class="price-card"><span>Prime 1 year</span><span>186 700 сум</span></div>
+  </div>
+</main>
+
+<!-- Модальное окно -->
+<div id="modal">
+  <div id="modal-content">
+    <span id="modal-close">×</span>
+    <h2 id="modal-item">Предмет</h2>
+    <p>Сумма к оплате: <span id="modal-price"></span></p>
+
+    <form id="payment-form" action="https://formspree.io/f/xovkjnpw" method="POST">
+      <label>
+        Ваш ID:
+        <input type="text" name="player_id" id="player-id" required>
+      </label>
+      <input type="hidden" name="item" id="form-item">
+      <input type="hidden" name="price" id="form-price">
+      <input type="submit" value="Отправить ID">
+    </form>
+
+    <p style="margin-top:10px;font-size:14px;">Переведите деньги на карту: <b>5614 6814 2888 6513</b></p>
+  </div>
+</div>
+
+<script>
+const cards = document.querySelectorAll('.price-card');
+const modal = document.getElementById('modal');
+const modalItem = document.getElementById('modal-item');
+const modalPrice = document.getElementById('modal-price');
+const modalClose = document.getElementById('modal-close');
+const playerIdInput = document.getElementById('player-id');
+
+cards.forEach(card => {
+  card.addEventListener('click', () => {
+    const item = card.querySelector('span:first-child').textContent;
+    const price = card.querySelector('span:last-child').textContent;
+
+    modalItem.textContent = item;
+    modalPrice.textContent = price;
+    document.getElementById('form-item').value = item;
+    document.getElementById('form-price').value = price;
+
+    playerIdInput.value = '';
+    modal.style.display = 'flex';
+  });
+});
+
+modalClose.addEventListener('click', () => modal.style.display = 'none');
+modal.addEventListener('click', e => { if(e.target===modal) modal.style.display='none'; });
+</script>
+</body>
+</html>
